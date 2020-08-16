@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Translator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript">
+        $(document).ready(function()  {
+
+            $('#testbtn').click(function () {
+            var location = $('#location').val();
+            var translate_to = $( "#translate_to option:selected" ).text();
+            if(location == '' | translate_to == 'Select the Language'){ return false}
+            else
+                {
+                        $.ajax({
+                              method: "GET",
+                              url: "/api/allfiles",
+
+                              data: { path: location, to_lang: translate_to },
+                              success: function (data) {
+                              htm = "<ol>"
+                              for (index = 0; index < data.length; index++) {
+                                    htm+="<li>"+data[index]+"</li>";
+                                }
+                                htm += "</ol>"
+
+                                $("#fileplace").html(htm);
+                                $("#resrow1").removeClass('invisible');
+                                $("#proceed").removeClass('invisible');
+                                                            },//success completion
+
+                              error: function (data) {  alert(data.responseText); },
+
+                                    })
+                }
+                });
+                })
+    </script>
+</head>
+<body>
+<div class="container-fluid border m-2 p-1 bg-light">
+    <div class="row bg-dark text-center text-white">
+        <div class="col-sm-12">
+            <i class="fa fa-globe fa-3x text-danger"></i><h1>XML Translator</h1>
+        </div>
+    </div>
+</div>
+<div class="container border border-dark">
+    <div class="row m-4 ">
+         <div class="col-sm-6">
+            <div class="input-group mb-6">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Folder Location</span>
+            </div>
+            <input id="location" type="text" class="form-control" placeholder="D:\myxmlfolder" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="col-sm-3 text-center">
+            <select id="translate_to" style="min-height:35px;min-width:100px;">
+                <option value="" disabled selected>Select the Language</option>
+                <option value="1">Japanese</option>
+                <option value="2">Tamil</option>
+                <option value="3">German</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <button id="testbtn" type="button" class="btn btn-danger btn-sm" style="min-height:35px;min-width:100px;">Test</button>
+        </div>
+
+    </div>
+    <div id="resrow1" class="row invisible">
+        <div class="col">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title"><h5>The following list of xml files found the the given location:</h5></div>
+                        <div class="card-text"><p id="fileplace"></p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="proceed" class="row invisible text-center">
+        <div class="col">
+            <div class="col-sm-12">
+            <button type="button" class="btn btn-success btn-sm m-2" style="min-height:35px;min-width:100px;">Proceed</button>
+        </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
