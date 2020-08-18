@@ -20,6 +20,10 @@ class Translator:
             if row['English'] in inp:
                 if self.new_lang == 'jp':
                     return row['Japanese']
+                elif self.new_lang == 'ge':
+                    return row['German']
+                elif self.new_lang == 'fr':
+                    return row['French']
         return None
 
     def data_parse(self):
@@ -46,7 +50,7 @@ class Translator:
         new_data = self.data_parse()
         with open(self.xmlfile+'_'+self.new_lang, "w", encoding="utf-8") as f:
             f.writelines(new_data)
-        print("success")
+        print("Translation completed")
 
-jp = Translator('xml2.xml','jp')
+jp = Translator('xml2.xml','jp') #['jp': 'Japanese', 'ge': 'German', 'fr': 'French']
 jp.prapare_newxml()
